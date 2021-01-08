@@ -7,7 +7,7 @@ Description:
 does the brunt of the processing and output.
 
 ****************************************************************/
-#ifndef CALLBACKS_H_   /* Include guard */
+#ifndef CALLBACKS_H_
 #define CALLBACKS_H_
 
 int allinfo_callback(void *data, int argc, char **argv, char **azColName);

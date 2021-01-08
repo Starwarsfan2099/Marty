@@ -11,20 +11,21 @@ VERBOSE = -v
 
 # the build target executable:
 TARGET = marty
-HEADERS = callbacks.c
+HEADERS = callbacks.h commands.h
+HEADERS_C = callbacks.c commands.c
 
 # Get OS
 UNAME_S := $(shell uname -s)
 
 all: $(TARGET)
 
-$(TARGET): $(TARGET).c callbacks.h commands.h
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c $(HEADERS) $(INCLUDES) $(LIBS)
+$(TARGET): $(TARGET).c
+	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c $(HEADERS_C) $(INCLUDES) $(LIBS)
 
 clean:
 	$(RM) $(TARGET)
 
-	# If on Mac OS, remove the debug symbol file as well
+# If on Mac OS, remove the debug symbol file as well
     ifeq ($(UNAME_S),Darwin)
 		$(RM) -rf $(TARGET).dSYM
     endif
