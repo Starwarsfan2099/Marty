@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 	char *filename = argv[1];
 	int rc;
 
-	fprintf(stderr, "\n[*] Marty Verion 1.0\n");
+	fprintf(stderr, "\n[*] Marty Verion 1.0 - Alpha\n");
 
 	// Check for no arguments or arguments for a help menu
 	if ((argc <= 2) || (strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "--help") == 0)) {
