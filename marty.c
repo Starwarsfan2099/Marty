@@ -63,8 +63,11 @@ int main(int argc, char* argv[]) {
 	}
 	
 	// Commands go here
-	if (strcmp(argv[2], "allinfo") == 0) {
+	if (strcmp(argv[2], "showallinfo") == 0) {
 		command_allinfo(db);
+	} else if (strcmp(argv[2], "showtextfiles") == 0) {
+		// command_textfiles(db);
+	} else {
 	}
 
 	// Close database

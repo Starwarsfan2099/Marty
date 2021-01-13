@@ -7,6 +7,7 @@ Description:
 to the callbacks header. This file also includes the sql commands.
 
 ****************************************************************/
+
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
@@ -14,5 +15,7 @@ to the callbacks header. This file also includes the sql commands.
 #include <sqlite3.h>
 
 int command_allinfo(sqlite3 *db);
+int command_textfiles(sqlite3 *db);
+
 
 #endif
