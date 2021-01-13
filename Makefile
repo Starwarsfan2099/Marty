@@ -1,12 +1,17 @@
-# the compiler: gcc for C program, define as g++ for C++
-CC = clang
+ifeq ($(OS),Windows_NT)
+	CC = gcc
+	INCLUDES = -I/usr/include/json-c
+else
+	# the compiler: gcc for C program, define as g++ for C++
+	CC = clang
+	INCLUDES = -I/usr/local/include/json-c -I/usr/local/include
+endif
 
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS  = -g -Wall
 LIBS = -L/usr/local/lib -lsqlite3 -ljson-c
-INCLUDES = -I/usr/local/include/json-c -I/usr/local/include
 VERBOSE = -v
 
 # the build target executable:
