@@ -45,7 +45,7 @@ int command_textfiles(sqlite3 *db){
 		sqlite3_free(zErrMsg);
 		return(0);
 	} else {
-		fprintf(stdout, "[+] Operation done successfully\n");
+		fprintf(stdout, "\n[+] Operation done successfully\n");
 		return(1);
 	}
 }

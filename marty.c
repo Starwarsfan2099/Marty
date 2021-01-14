@@ -59,14 +59,14 @@ int main(int argc, char* argv[]) {
 		fprintf(stderr, "[-] Can't open database: %s\n", sqlite3_errmsg(db));
 		return(0);
 	} else {
-		fprintf(stderr, "[+] Opened database successfully\n");
+		fprintf(stderr, "[+] Opened database successfully\n\n");
 	}
 	
 	// Commands go here
 	if (strcmp(argv[2], "showallinfo") == 0) {
 		command_allinfo(db);
 	} else if (strcmp(argv[2], "showtextfiles") == 0) {
-		// command_textfiles(db);
+		command_textfiles(db);
 	} else {
 	}
 

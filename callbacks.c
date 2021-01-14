@@ -39,28 +39,59 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 	return 0;
 }
 
+
+
 int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
     json_object *new_obj;
 
-    printf("%s: ", (const char*)data);
-
 	for(i = 0; i<argc; i++){
-		if(strstr(argv[i], "{") != NULL) {
-            printf("Found json data");
-			jobj = json_tokener_parse(argv[i]);
-			json_object *obj_foo = json_object_object_get(new_obj, "displayText");
-            char *foo_val = json_object_get_string(obj_foo);
-            if (obj_foo != NULL) {
-                printf("%s:\n%s\n",azColName[i], \
-				json_object_to_json_string_ext(jobj, \
-				JSON_C_TO_STRING_SPACED | \
-				JSON_C_TO_STRING_PRETTY));
-            }
+		if(!argv[i]){
+			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		} else {
+			if(strstr(argv[i], "{") != NULL) {
+				jobj = json_tokener_parse(argv[i]);
+				json_object *tmp;
+				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
+					if(strstr(argv[i], ".txt") != NULL) {
+						printf("Name: %s\n", json_object_get_string(tmp));
+						json_object_object_get_ex(jobj, "description", &tmp);
+						printf("Path: %s\n\n", json_object_get_string(tmp));
+					}
+				}
+			}
         }
 	}
+	
+	return 0;
+}
 
-	printf("\n");
+int programs_callback(void *data, int argc, char **argv, char **azColName){
+	int i;
+	struct json_object *jobj;
+    json_object *new_obj;
+
+	for(i = 0; i<argc; i++){
+		if(!argv[i]){
+			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		} else {
+			if(strstr(argv[i], "{") != NULL) {
+				jobj = json_tokener_parse(argv[i]);
+				json_object *tmp;
+				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
+					// Key Name exists
+					printf("Display Text: %s\n", json_object_get_string(tmp));
+					// Name: xxxxx
+				}
+				if (json_object_object_get_ex(jobj, "appDisplayName", &tmp)) {
+					// Key Name exists
+					printf("Display App Name: %s\n", json_object_get_string(tmp));
+					// Name: xxxxx
+				}
+			}
+        }
+	}
+	
 	return 0;
 }
