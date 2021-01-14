@@ -8,9 +8,40 @@ to the callbacks header. This file also includes the sql commands.
 
 ****************************************************************/
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <sqlite3.h>
 #include "callbacks.h"
+
+#if defined(__CYGWIN__) && !defined(_WIN32)
+
+int command_get_database_path(){
+	char *profile_name;
+	char filepath[80];
+	FILE *catalog;
+	
+	profile_name = getenv("USERNAME");
+	printf("Profile Name: %s\n", profile_name);
+
+	strcpy(filepath, "C:\\Users\\");
+	strcat(filepath, profile_name);
+	strcat(filepath, "\\AppData\\Local\\ConnectedDevicesPlatform\\CDPGlobalSettings.cdp");
+
+	printf("Catalog File Path: %s\n\n", filepath);
+
+ 	if ((catalog = fopen(filepath, "r")) == NULL){
+       printf("Error! opening file");
+
+       // Program exits if the file pointer returns NULL.
+       return(1);
+   	}
+
+	printf("[+] Opened Catalog file.\n");
+	fclose(catalog);
+}
+
+#endif
 
 int command_allinfo(sqlite3 *db){
 	char *sql;
