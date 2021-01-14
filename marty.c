@@ -78,8 +78,10 @@ int main(int argc, char* argv[]) {
 		command_textfiles(db);
 	} else if (strcmp(argv[2], "showprograms") == 0) {
 		command_programs(db);
+#if defined(__CYGWIN__) && !defined(_WIN32)
 	} else if (strcmp(argv[2], "showdatabasepath") == 0) {
 		command_get_database_path();
+#endif
 	} else {
 	}
 
