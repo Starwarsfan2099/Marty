@@ -21,8 +21,8 @@ command line args, and executes commands based off of them.
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\nshowallinfo			Print all information in the database.\n");
-	printf("\nCommands:\nshowtextfiles			Print all text files found in the database.\n");
-	printf("\nCommands:\nshowprograms			Print all programs executed by the user found in the database.\n");
+	printf("showtextfiles			Print all text files found in the database.\n");
+	printf("showprograms			Print all programs executed by the user found in the database.\n");
 	printf("\n");
 	return(1);
 }

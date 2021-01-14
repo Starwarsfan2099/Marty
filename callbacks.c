@@ -42,7 +42,6 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
-    json_object *new_obj;
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
@@ -68,7 +67,6 @@ int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 int programs_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
-    json_object *new_obj;
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
