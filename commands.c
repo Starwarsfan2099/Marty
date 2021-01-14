@@ -26,7 +26,7 @@ int command_allinfo(sqlite3 *db){
 		sqlite3_free(zErrMsg);
 		return(0);
 	} else {
-		fprintf(stdout, "[+] Operation done successfully\n");
+		fprintf(stdout, "[+] Operation done successfully\n\n");
 		return(1);
 	}
 }
@@ -45,7 +45,7 @@ int command_textfiles(sqlite3 *db){
 		sqlite3_free(zErrMsg);
 		return(0);
 	} else {
-		fprintf(stdout, "\n[+] Operation done successfully\n");
+		fprintf(stdout, "\n[+] Operation done successfully\n\n");
 		return(1);
 	}
 }
@@ -64,7 +64,7 @@ int command_programs(sqlite3 *db){
 		sqlite3_free(zErrMsg);
 		return(0);
 	} else {
-		fprintf(stdout, "\n[+] Operation done successfully\n");
+		fprintf(stdout, "\n[+] Operation done successfully\n\n");
 		return(1);
 	}
 }
