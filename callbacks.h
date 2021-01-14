@@ -13,6 +13,6 @@ does the brunt of the processing and output.
 
 int allinfo_callback(void *data, int argc, char **argv, char **azColName);
 int textfiles_callback(void *data, int argc, char **argv, char **azColName);
-
+int programs_callback(void *data, int argc, char **argv, char **azColName);
 
 #endif

@@ -20,7 +20,9 @@ command line args, and executes commands based off of them.
 
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
-	printf("\nCommands:\nallinfo			Print all information in the database.\n");
+	printf("\nCommands:\nshowallinfo			Print all information in the database.\n");
+	printf("\nCommands:\nshowtextfiles			Print all text files found in the database.\n");
+	printf("\nCommands:\nshowprograms			Print all programs executed by the user found in the database.\n");
 	printf("\n");
 	return(1);
 }
@@ -67,6 +69,8 @@ int main(int argc, char* argv[]) {
 		command_allinfo(db);
 	} else if (strcmp(argv[2], "showtextfiles") == 0) {
 		command_textfiles(db);
+	} else if (strcmp(argv[2], "showprograms") == 0) {
+		command_programs(db);
 	} else {
 	}
 
