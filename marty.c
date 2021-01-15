@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 	char *filename = argv[1];
 	int rc;
 
-	fprintf(stderr, "\n[*] Marty Verion 1.0 - Alpha\n");
+	fprintf(stderr, "\n\t[*] Marty Verion 1.0 - Alpha\n");
 	fprintf(stderr, "\"It's time to go back... in the Windows Timeline.\"\n\n");
 
 	// Check for no arguments or arguments for a help menu
