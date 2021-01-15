@@ -60,4 +60,5 @@ marty.dSYM/
 
 # Builds
 
+!build/build.txt
 build/*
