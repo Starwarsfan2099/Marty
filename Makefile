@@ -1,8 +1,9 @@
 ifeq ($(OS),Windows_NT)
+	# If on Windows, use gcc
 	CC = gcc
 	INCLUDES = -I/usr/include/json-c
 else
-	# the compiler: gcc for C program, define as g++ for C++
+	# On Mac and Linux, we prefer Clang, but GCC can also be used
 	CC = clang
 	INCLUDES = -I/usr/local/include/json-c -I/usr/local/include
 endif

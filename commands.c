@@ -14,6 +14,7 @@ to the callbacks header. This file also includes the sql commands.
 #include <sqlite3.h>
 #include "callbacks.h"
 
+// On Windows, include a command to find the timeline databases.
 #if defined(__CYGWIN__) && !defined(_WIN32)
 
 int command_get_database_path(){
@@ -21,15 +22,18 @@ int command_get_database_path(){
 	char filepath[80];
 	FILE *catalog;
 	
+	// Get the current signed in username
 	profile_name = getenv("USERNAME");
 	printf("Profile Name: %s\n", profile_name);
 
+	// Create the path to the catalog
 	strcpy(filepath, "C:\\Users\\");
 	strcat(filepath, profile_name);
 	strcat(filepath, "\\AppData\\Local\\ConnectedDevicesPlatform\\CDPGlobalSettings.cdp");
 
 	printf("Catalog File Path: %s\n\n", filepath);
 
+	// Open the catalog file
  	if ((catalog = fopen(filepath, "r")) == NULL){
        printf("Error! opening file");
 

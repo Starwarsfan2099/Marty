@@ -17,7 +17,7 @@ command line args, and executes commands based off of them.
 #include "callbacks.h"
 #include "commands.h"
 
-
+// Print help information
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
@@ -25,6 +25,7 @@ int help() {
 	printf("showtextfiles			Print all text files found in the database.\n");
 	printf("showprograms			Print all programs executed by the user found in the database.\n");
 
+// Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
 	printf("showdatabasepath		Print the path to the timeline database if on Windows.\n");
 #endif
@@ -33,6 +34,7 @@ int help() {
 	return(1);
 }
 
+// Check to see if a file exists
 bool file_exists (char *filename) {
 	if( access( filename, F_OK ) == 0 ) {
 		return(1);
