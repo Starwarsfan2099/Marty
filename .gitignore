@@ -59,6 +59,5 @@ json-c-build/
 marty.dSYM/
 
 # Builds
-
-!build/build.txt
 build/*
+!build/build.txt
