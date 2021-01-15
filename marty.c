@@ -8,7 +8,6 @@ command line args, and executes commands based off of them.
 
 ****************************************************************/
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sqlite3.h>
@@ -16,6 +15,7 @@ command line args, and executes commands based off of them.
 
 #include "callbacks.h"
 #include "commands.h"
+#include "utils.h"
 
 // Print help information
 int help() {
@@ -32,15 +32,6 @@ int help() {
 
 	printf("\n");
 	return(1);
-}
-
-// Check to see if a file exists
-bool file_exists (char *filename) {
-	if( access( filename, F_OK ) == 0 ) {
-		return(1);
-	} else {
-		return(0);
-	}
 }
 
 int main(int argc, char* argv[]) {

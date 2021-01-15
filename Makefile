@@ -17,8 +17,8 @@ VERBOSE = -v
 
 # the build target executable:
 TARGET = marty
-HEADERS = callbacks.h commands.h
-HEADERS_C = callbacks.c commands.c
+HEADERS = callbacks.h commands.h utils.h
+HEADERS_C = callbacks.c commands.c utils.c
 
 # Get OS
 UNAME_S := $(shell uname -s)

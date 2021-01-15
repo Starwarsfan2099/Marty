@@ -11,7 +11,9 @@ does the brunt of the processing and output.
 #include <json.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "callbacks.h"
+#include "utils.h"
 
 int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
@@ -42,19 +44,23 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
+	char *modified_time;
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
 			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
 		} else {
+			if (strcmp(azColName[i], "LastModifiedTime") == 0){
+				modified_time = argv[i];
+			}
 			if(strstr(argv[i], "{") != NULL) {
 				jobj = json_tokener_parse(argv[i]);
 				json_object *tmp;
 				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
 					if(strstr(argv[i], ".txt") != NULL) {
-						printf("Name: %s\n", json_object_get_string(tmp));
+						printf("[+] Name: %s\n", json_object_get_string(tmp));
 						json_object_object_get_ex(jobj, "description", &tmp);
-						printf("Path: %s\n\n", json_object_get_string(tmp));
+						printf("[*] Path: %s\n[*] Modified Time:%s\n\n", json_object_get_string(tmp), epoch_to_datetime(modified_time));
 					}
 				}
 			}
