@@ -33,6 +33,6 @@ clean:
 
 # If on Mac OS, remove the debug symbol file as well
     ifeq ($(UNAME_S),Darwin)
-		$(RM) -rf $(TARGET).dSYM
+		$(RM) -rf build/$(TARGET).dSYM
     endif
 
