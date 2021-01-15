@@ -26,10 +26,10 @@ UNAME_S := $(shell uname -s)
 all: $(TARGET)
 
 $(TARGET): $(TARGET).c
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c $(HEADERS_C) $(INCLUDES) $(LIBS)
+	$(CC) $(CFLAGS) -o build/$(TARGET) $(TARGET).c $(HEADERS_C) $(INCLUDES) $(LIBS)
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) build/$(TARGET)
 
 # If on Mac OS, remove the debug symbol file as well
     ifeq ($(UNAME_S),Darwin)

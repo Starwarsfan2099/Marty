@@ -57,3 +57,7 @@ json-c-build/
 
 # Debug directory
 marty.dSYM/
+
+# Builds
+
+build/*
