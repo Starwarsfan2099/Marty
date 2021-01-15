@@ -12,6 +12,9 @@ to the callbacks header. This file also includes the sql commands.
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <sqlite3.h>
 #include "callbacks.h"
 
@@ -22,6 +25,10 @@ int command_get_database_path(){
 	char *profile_name;
 	char filepath[80];
 	FILE *catalog;
+	char buffer[1024];
+
+	struct json_object *parsed_json;
+	struct json_object *name;
 
 	// Get the current signed in username
 	profile_name = getenv("USERNAME");
@@ -44,15 +51,22 @@ int command_get_database_path(){
 
 	printf("[+] Opened Catalog file.\n");
 
+	fread(buffer, 1024, 1, catalog);
+	fclose(catalog);
+
+	parsed_json = json_tokener_parse(buffer);
+	json_object_object_get_ex(parsed_json, "AFSUrl", &name);
+	printf("Name: %s\n", json_object_get_string(name));
+
+	/*
 	fseek(catalog, 0, SEEK_END);
 	long fsize = ftell(catalog);
 	fseek(catalog, 0, SEEK_SET);
 
 	char *catalog_contents = malloc(fsize + 1);
 	fread(catalog_contents, 1, fsize, catalog);
-	fclose(catalog);
-
-	printf("[+] Catalog COntents:\n%s", catalog_contents);
+	*/
+	// printf("[+] Catalog Contents:\n%s", catalog_contents);
 
 }
 

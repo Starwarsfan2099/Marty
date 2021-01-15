@@ -60,7 +60,7 @@ int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 					if(strstr(argv[i], ".txt") != NULL) {
 						printf("[+] Name: %s\n", json_object_get_string(tmp));
 						json_object_object_get_ex(jobj, "description", &tmp);
-						printf("[*] Path: %s\n[*] Modified Time:%s\n\n", json_object_get_string(tmp), epoch_to_datetime(modified_time));
+						printf("[*] Path: %s\n[*] Modified Time: %s\n\n", json_object_get_string(tmp), epoch_to_datetime(modified_time));
 					}
 				}
 			}
