@@ -16,7 +16,9 @@ to the callbacks header. This file also includes the sql commands.
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sqlite3.h>
+#if defined(__CYGWIN__) && !defined(_WIN32)
 #include <windows.h>
+#endif
 
 #include "callbacks.h"
 #include "tinydir.h"

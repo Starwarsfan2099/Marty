@@ -63,4 +63,4 @@ build/*
 !build/build.txt
 
 # Stackdumps
-*.stackdump
+*.exe.stackdump
