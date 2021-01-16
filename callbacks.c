@@ -44,7 +44,7 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
-	char *modified_time;
+	char *modified_time = "";
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
