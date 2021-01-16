@@ -16,58 +16,53 @@ to the callbacks header. This file also includes the sql commands.
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sqlite3.h>
+#include <windows.h>
+
 #include "callbacks.h"
+#include "tinydir.h"
+#include "utils.h"
 
 // On Windows, include a command to find the timeline databases.
 #if defined(__CYGWIN__) && !defined(_WIN32)
 
-int command_get_database_path(){
+int command_get_database_path() {
 	char *profile_name;
-	char filepath[80];
-	FILE *catalog;
-	char buffer[1024];
-
-	struct json_object *parsed_json;
-	struct json_object *name;
+	char dirpath[256];
+	char newpath[256];
+	tinydir_dir dir;
 
 	// Get the current signed in username
 	profile_name = getenv("USERNAME");
 	printf("Profile Name: %s\n", profile_name);
 
 	// Create the path to the catalog
-	strcpy(filepath, "C:\\Users\\");
-	strcat(filepath, profile_name);
-	strcat(filepath, "\\AppData\\Local\\ConnectedDevicesPlatform\\CDPGlobalSettings.cdp");
+	strcpy(dirpath, "C:\\Users\\");
+	strcat(dirpath, profile_name);
+	strcat(dirpath, "\\AppData\\Local\\ConnectedDevicesPlatform\\");
 
-	printf("Catalog File Path: %s\n\n", filepath);
+	printf("Timeline Path: %s\n\n", dirpath);
 
-	// Open the catalog file
- 	if ((catalog = fopen(filepath, "r")) == NULL){
-       printf("[-] Error opening catalog file");
+	// Use tinydir to get a list of directories in the timeline folder.
+	tinydir_open(&dir, dirpath);
 
-       // Program exits if the file pointer returns NULL.
-       return(1);
-   	}
+	while (dir.has_next)
+	{
+		tinydir_file file;
+		tinydir_readfile(&dir, &file);
 
-	printf("[+] Opened Catalog file.\n");
+		if (file.is_dir) {
+			strcpy(newpath, dirpath);
+			strcat(newpath, file.name);
+			strcat(newpath, "\\ActivitiesCache.db");
+			if (file_exists(newpath) == 1) {
+				printf("[+] Found Timeline Database at: %s\n", newpath);
+			}
+		}
+		tinydir_next(&dir);
+	}
 
-	fread(buffer, 1024, 1, catalog);
-	fclose(catalog);
-
-	parsed_json = json_tokener_parse(buffer);
-	json_object_object_get_ex(parsed_json, "AFSUrl", &name);
-	printf("Name: %s\n", json_object_get_string(name));
-
-	/*
-	fseek(catalog, 0, SEEK_END);
-	long fsize = ftell(catalog);
-	fseek(catalog, 0, SEEK_SET);
-
-	char *catalog_contents = malloc(fsize + 1);
-	fread(catalog_contents, 1, fsize, catalog);
-	*/
-	// printf("[+] Catalog Contents:\n%s", catalog_contents);
-
+	tinydir_close(&dir);
+	return(0);
 }
 
 #endif

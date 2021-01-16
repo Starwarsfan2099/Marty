@@ -9,12 +9,11 @@ Description:
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <unistd.h>
 #include <time.h>
 
 // Check to see if a file exists
-bool file_exists (char *filename) {
+int file_exists (char *filename) {
 	if( access( filename, F_OK ) == 0 ) {
 		return(1);
 	} else {

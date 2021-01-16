@@ -17,5 +17,6 @@ to the callbacks header. This file also includes the sql commands.
 int command_allinfo(sqlite3 *db);
 int command_textfiles(sqlite3 *db);
 int command_programs(sqlite3 *db);
+int command_get_database_path();
 
 #endif
