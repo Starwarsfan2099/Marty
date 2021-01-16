@@ -21,14 +21,19 @@ command line args, and executes commands based off of them.
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
-	printf("showallinfo			Print all information in the database.\n");
-	printf("showtextfiles			Print all text files found in the database.\n");
-	printf("showprograms			Print all programs executed by the user found in the database.\n");
+	printf("\tshowallinfo			Print all information in the database.\n");
+	printf("\tshowtextfiles			Print all text files found in the database.\n");
+	printf("\tshowprograms			Print all programs executed by the user found in the database.\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
-	printf("showdatabasepath		Print the path to the timeline database if on Windows.\n");
+	printf("\nWindows Commands:\n");
+	printf("\tshowdatabasepath		Print the path to the timeline database if on Windows.\n\n");
+	printf("To find databases:\n\tmarty.exe showdatabasepath\n");
 #endif
+
+	printf("\nUsage: \n./marty \"Database-Path\" Command\n");
+
 
 	printf("\n");
 	return(1);
@@ -43,10 +48,17 @@ int main(int argc, char* argv[]) {
 	fprintf(stderr, "\"It's time to go back... in the Windows Timeline.\"\n\n");
 
 	// Check for no arguments or arguments for a help menu
-	if ((argc <= 2) || (strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "--help") == 0)) {
+	if ((argc <= 1) || (strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "--help") == 0)) {
 		help();
 		return(0);
 	}
+
+#if defined(__CYGWIN__) && !defined(_WIN32)
+	if (strcmp(argv[1], "showdatabasepath") == 0) {
+		command_get_database_path();
+		return(1);
+	}
+#endif
 	
 	// Check if the database file exists
 	if (file_exists(filename) == 0) {
@@ -71,10 +83,6 @@ int main(int argc, char* argv[]) {
 		command_textfiles(db);
 	} else if (strcmp(argv[2], "showprograms") == 0) {
 		command_programs(db);
-#if defined(__CYGWIN__) && !defined(_WIN32)
-	} else if (strcmp(argv[2], "showdatabasepath") == 0) {
-		command_get_database_path();
-#endif
 	} else {
 	}
 

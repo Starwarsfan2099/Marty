@@ -11,7 +11,7 @@ endif
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS  = -g -Wall
+CFLAGS  = -g -Wall -O2
 LIBS = -L/usr/local/lib -lsqlite3 -ljson-c
 VERBOSE = -v
 
