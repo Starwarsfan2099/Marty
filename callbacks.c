@@ -72,20 +72,41 @@ int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 
 int programs_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
+	int found_program = 0;
 	struct json_object *jobj;
-
+	char *start_time = "";
+	char *modified_time = "";
+	const char *program_name = "";
+	const char *display_text = "";
+	
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
 			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
 		} else {
+			if (strcmp(azColName[i], "StartTime") == 0){
+				start_time = argv[i];
+			}
+			if (strcmp(azColName[i], "LastModifiedTime") == 0){
+				modified_time = argv[i];
+			}
 			if(strstr(argv[i], "{") != NULL) {
 				jobj = json_tokener_parse(argv[i]);
 				json_object *tmp;
 				if (json_object_object_get_ex(jobj, "appDisplayName", &tmp)) {
-					printf("Program Name: %s\n", json_object_get_string(tmp));
+					program_name = json_object_get_string(tmp);
+					found_program = 1;
+				}
+				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
+					display_text = json_object_get_string(tmp);
+					found_program = 1;
 				}
 			}
         }
+	}
+
+	if (found_program != 0) {
+		printf("[*] Program: %s\n[*] Display Text: %s\n[*] Start Time: %s (Epoch: %s)\n[*] Last Modified Time: %s (Epoch %s)\n\n", \
+		program_name, display_text, epoch_to_datetime(start_time), start_time, epoch_to_datetime(modified_time), modified_time);
 	}
 	
 	return 0;
