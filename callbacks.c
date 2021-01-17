@@ -48,7 +48,7 @@ int textfiles_callback(void *data, int argc, char **argv, char **azColName){
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
-			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+			// Pass, it's a NULL cell
 		} else {
 			if (strcmp(azColName[i], "LastModifiedTime") == 0){
 				modified_time = argv[i];
@@ -81,21 +81,26 @@ int programs_callback(void *data, int argc, char **argv, char **azColName){
 	
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
-			// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+			// Pass, it's a NULL cell
 		} else {
+			// Get application start time
 			if (strcmp(azColName[i], "StartTime") == 0){
 				start_time = argv[i];
 			}
+			// Last modified time
 			if (strcmp(azColName[i], "LastModifiedTime") == 0){
 				modified_time = argv[i];
 			}
+			// Decode JSON data from the payload here
 			if(strstr(argv[i], "{") != NULL) {
 				jobj = json_tokener_parse(argv[i]);
 				json_object *tmp;
+				// Program Name
 				if (json_object_object_get_ex(jobj, "appDisplayName", &tmp)) {
 					program_name = json_object_get_string(tmp);
 					found_program = 1;
 				}
+				// Text displayed in the title of the window for the app
 				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
 					display_text = json_object_get_string(tmp);
 					found_program = 1;

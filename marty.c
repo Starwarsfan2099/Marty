@@ -82,7 +82,16 @@ int main(int argc, char* argv[]) {
 	} else if (strcmp(argv[2], "showtextfiles") == 0) {
 		command_textfiles(db);
 	} else if (strcmp(argv[2], "showprograms") == 0) {
-		command_programs(db);
+		if (argc == 3) {
+			command_programs(db, "NULL");
+		} else if (strcmp(argv[3], "-s") == 0) {
+			command_programs(db, "-s");
+		} else if (strcmp(argv[3], "-l") == 0) {
+			command_programs(db, "-l");
+		} else {
+			help();
+			return(0);
+		}
 	} else {
 	}
 
