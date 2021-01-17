@@ -23,7 +23,8 @@ int help() {
 	printf("\nCommands:\n");
 	printf("\tshowallinfo			Print all information in the database.\n");
 	printf("\tshowtextfiles			Print all text files found in the database.\n");
-	printf("\tshowprograms			Print all programs executed by the user found in the database.\n");
+	printf("\tshowprograms 			Print all programs executed by the user found in the database.\n");
+	printf("\t           			Sort by last program modification time with \"-l\" or by program start time with \"-s\".\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
