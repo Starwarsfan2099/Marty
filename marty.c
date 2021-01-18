@@ -21,10 +21,11 @@ command line args, and executes commands based off of them.
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
-	printf("\tshowallinfo			Print all information in the database.\n");
-	printf("\tshowtextfiles			Print all text files found in the database.\n");
-	printf("\tshowprograms 			Print all programs executed by the user found in the database.\n");
-	printf("\t           			Sort by last program modification time with \"-l\" or by program start time with \"-s\".\n");
+	printf("\tshowallinfo				Print all information in the database.\n");
+	printf("\tshowtextfiles [-l, -s]			Print all text files found in the database.\n");
+	printf("\t           				Sort by last modification time with \"-l\" or by editor application start time with \"-s\".\n");
+	printf("\tshowprograms [-l, -s] 			Print all programs executed by the user found in the database.\n");
+	printf("\t           				Sort by last program modification time with \"-l\" or by program start time with \"-s\".\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
@@ -34,7 +35,7 @@ int help() {
 #endif
 
 	printf("\nUsage: \n./marty \"Database-Path\" Command\n");
-
+	printf("\nEamples: \n./marty \"ActivitiesCache.db\" showtextfiles -l\n");
 
 	printf("\n");
 	return(1);
@@ -81,7 +82,16 @@ int main(int argc, char* argv[]) {
 	if (strcmp(argv[2], "showallinfo") == 0) {
 		command_allinfo(db);
 	} else if (strcmp(argv[2], "showtextfiles") == 0) {
-		command_textfiles(db);
+		if (argc == 3) {
+			command_textfiles(db, "NULL");
+		} else if (strcmp(argv[3], "-s") == 0) {
+			command_textfiles(db, "-s");
+		} else if (strcmp(argv[3], "-l") == 0) {
+			command_textfiles(db, "-l");
+		} else {
+			help();
+			return(0);
+		}
 	} else if (strcmp(argv[2], "showprograms") == 0) {
 		if (argc == 3) {
 			command_programs(db, "NULL");
