@@ -22,12 +22,13 @@ int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
 	printf("\tshowallinfo				Print all information in the database.\n");
-	printf("\tshowtextfiles [-l, -s]			Print all text files found in the database.\n");
-	printf("\t           				Sort by last modification time with \"-l\" or by editor application start time with \"-s\".\n");
-	printf("\tshowprograms [-l, -s] 			Print all programs executed by the user found in the database.\n");
-	printf("\t           				Sort by last program modification time with \"-l\" or by program start time with \"-s\".\n");
-	printf("\tshowextentions EXTENTION [-l, -s] 	Print all files found with the EXTENTION.\n");
-	printf("\t           				Sort by last modification time with \"-l\" or by editor application start time with \"-s\".\n");
+	printf("\tshowfilename NAME			Print all files found with NAME in the title.\n");
+	printf("\tshowprograms				Print all programs executed by the user found in the database.\n");
+	printf("\tshowextentions EXTENTION		Print all files found with the EXTENTION.\n");
+
+	printf("\nOptions:\n");
+	printf("\t-l					Sort by the last modification time.\n");
+	printf("\t-s					Sort by the last application or editior start time.\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
@@ -85,17 +86,26 @@ int main(int argc, char* argv[]) {
 	// Commands go here
 	if (strcmp(argv[2], "showallinfo") == 0) {
 		command_allinfo(db);
-	} else if (strcmp(argv[2], "showtextfiles") == 0) {
-		if (argc == 3) {
-			command_textfiles(db, "NULL");
-		} else if (strcmp(argv[3], "-s") == 0) {
-			command_textfiles(db, "-s");
-		} else if (strcmp(argv[3], "-l") == 0) {
-			command_textfiles(db, "-l");
+	} else if (strcmp(argv[2], "showfilename") == 0) {
+		if (argc < 4) {
+			help();
+			return(0);
+		}
+		len = set_file_name(argv[3]);
+		if (len == 0){
+			return (0);
+		}
+		if (argc == 4) {
+			command_file_name(db, "NULL");
+		} else if (strcmp(argv[4], "-s") == 0) {
+			command_file_name(db, "-s");
+		} else if (strcmp(argv[4], "-l") == 0) {
+			command_file_name(db, "-l");
 		} else {
 			help();
 			return(0);
 		}
+		set_file_name("");
 	} else if (strcmp(argv[2], "showprograms") == 0) {
 		if (argc == 3) {
 			command_programs(db, "NULL");

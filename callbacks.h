@@ -15,6 +15,8 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName);
 int textfiles_callback(void *data, int argc, char **argv, char **azColName);
 int programs_callback(void *data, int argc, char **argv, char **azColName);
 int extention_callback(void *data, int argc, char **argv, char **azColName);
+int file_name_callback(void *data, int argc, char **argv, char **azColName);
 int set_extention(char *extention);
+int set_file_name(char *extention);
 
 #endif
