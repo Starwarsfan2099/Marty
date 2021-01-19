@@ -18,5 +18,6 @@ int command_allinfo(sqlite3 *db);
 int command_textfiles(sqlite3 *db, char *argument);
 int command_programs(sqlite3 *db, char *argument);
 int command_get_database_path();
+int command_extentions(sqlite3 *db, char *argument);
 
 #endif

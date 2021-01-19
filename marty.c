@@ -26,16 +26,19 @@ int help() {
 	printf("\t           				Sort by last modification time with \"-l\" or by editor application start time with \"-s\".\n");
 	printf("\tshowprograms [-l, -s] 			Print all programs executed by the user found in the database.\n");
 	printf("\t           				Sort by last program modification time with \"-l\" or by program start time with \"-s\".\n");
+	printf("\tshowextentions EXTENTION [-l, -s] 	Print all files found with the EXTENTION.\n");
+	printf("\t           				Sort by last modification time with \"-l\" or by editor application start time with \"-s\".\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
 	printf("\nWindows Commands:\n");
-	printf("\tshowdatabasepath		Print the path to the timeline database if on Windows.\n\n");
+	printf("\tshowdatabasepath			Print the path to the timeline database if on Windows.\n\n");
 	printf("To find databases:\n\tmarty.exe showdatabasepath\n");
 #endif
 
 	printf("\nUsage: \n./marty \"Database-Path\" Command\n");
 	printf("\nEamples: \n./marty \"ActivitiesCache.db\" showtextfiles -l\n");
+	printf("./marty \"ActivitiesCache.db\" showextentions .docx -s\n");
 
 	printf("\n");
 	return(1);
@@ -45,6 +48,7 @@ int main(int argc, char* argv[]) {
 	sqlite3 *db;
 	char *filename = argv[1];
 	int rc;
+	int len;
 
 	fprintf(stderr, "\n\t[*] Marty Verion 1.0 - Alpha\n");
 	fprintf(stderr, "\"It's time to go back... in the Windows Timeline.\"\n\n");
@@ -103,6 +107,26 @@ int main(int argc, char* argv[]) {
 			help();
 			return(0);
 		}
+	} else if (strcmp(argv[2], "showextentions") == 0) {
+		if (argc < 4) {
+			help();
+			return(0);
+		}
+		len = set_extention(argv[3]);
+		if (len == 0){
+			return (0);
+		}
+		if (argc == 4) {
+			command_extentions(db, "NULL");
+		} else if (strcmp(argv[4], "-s") == 0) {
+			command_extentions(db, "-s");
+		} else if (strcmp(argv[4], "-l") == 0) {
+			command_extentions(db, "-l");
+		} else {
+			help();
+			return(0);
+		}
+		set_extention("");
 	} else {
 	}
 
