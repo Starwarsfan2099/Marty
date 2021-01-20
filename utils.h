@@ -13,6 +13,7 @@ Description:
 #define UTILS_H_
 
 bool file_exists (char *filename);
-char *epoch_to_datetime(char * epoch_time);
+char *epoch_to_datetime(char * input_time);
+char *find_substring(const char *main_string, const char *start_pattern, const char *end_pattern);
 
 #endif

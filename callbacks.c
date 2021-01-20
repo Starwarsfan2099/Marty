@@ -130,48 +130,6 @@ int set_extention(char *extention){
 	}
 }
 
-int extention_callback(void *data, int argc, char **argv, char **azColName){
-	int i;
-	int found_program = 0;
-	struct json_object *jobj;
-	char *modified_time = "";
-	char *app_activity_id = "";
-
-	for(i = 0; i<argc; i++){
-		if(!argv[i]){
-			// Pass, it's a NULL cell
-		} else {
-			if (strcmp(azColName[i], "LastModifiedTime") == 0){
-				modified_time = argv[i];
-			}
-			if (strcmp(azColName[i], "AppActivityId") == 0){
-				if(strstr(argv[i], file_extention) != NULL) {
-					app_activity_id = argv[i];
-					found_program = 1;
-				}
-			}
-			if(strstr(argv[i], "{") != NULL) {
-				jobj = json_tokener_parse(argv[i]);
-				json_object *tmp;
-				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
-					if(strstr(argv[i], file_extention) != NULL) {
-						printf("[+] File Name: %s\n", json_object_get_string(tmp));
-						json_object_object_get_ex(jobj, "description", &tmp);
-						printf("[*] Path: %s\n[*] Modified Time: %s\n\n", json_object_get_string(tmp), epoch_to_datetime(modified_time));
-					}
-				}
-			}
-        }
-	}
-
-	if (found_program == 1){
-		printf("[+] AppACtivityId: %s\n[*] Modified Time: %s\n\n", app_activity_id, epoch_to_datetime(modified_time));
-		found_program = 0;
-	}
-	
-	return 0;
-}
-
 int set_file_name(char *name){
 	if (strlen(file_name) <= 19){
 		sprintf(file_name, "%s", name);
@@ -182,13 +140,15 @@ int set_file_name(char *name){
 	}
 }
 
-int file_name_callback(void *data, int argc, char **argv, char **azColName){
+int extention_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	int found_program = 0;
 	struct json_object *jobj;
 	char *modified_time = "";
+	char *start_time = "";
 	char *app_activity_id = "";
 	const char *path = "";
+	const char *file_title = "";
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
@@ -196,6 +156,87 @@ int file_name_callback(void *data, int argc, char **argv, char **azColName){
 		} else {
 			if (strcmp(azColName[i], "LastModifiedTime") == 0){
 				modified_time = argv[i];
+				// printf("ModifyTime: %s (%s)\n", modified_time, epoch_to_datetime(modified_time));
+
+			}
+			if (strcmp(azColName[i], "StartTime") == 0){
+				start_time = argv[i];
+				// printf("StartTime: %s (%s)\n", start_time, epoch_to_datetime(start_time));
+			}
+			if (strcmp(azColName[i], "AppActivityId") == 0){
+				if(strstr(argv[i], file_extention) != NULL) {
+					app_activity_id = argv[i];
+					found_program = 1;
+				}
+			}
+			
+			if (strcmp(azColName[i], "AppId") == 0){
+				if(strstr(argv[i], file_extention) != NULL) {
+					const char *start_pattern = "crossplatform\"},{\"application\":\"";
+					const char *end_pattern = "\",\"platform\":\"";
+					char main_string [strlen(argv[i]) + 1];
+					sprintf(main_string, "%s", argv[i]);
+					path = find_substring(main_string, start_pattern, end_pattern);
+				}
+			}
+			
+			if(strstr(argv[i], "{") != NULL) {
+				jobj = json_tokener_parse(argv[i]);
+				json_object *tmp;
+				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
+					if(strstr(argv[i], file_extention) != NULL) {
+						file_title = json_object_get_string(tmp );
+						json_object_object_get_ex(jobj, "description", &tmp);
+						if (tmp != NULL){
+							path = json_object_get_string(tmp);
+						}
+						found_program = 2;
+					}
+				}
+			}
+        }
+	}
+
+	if (found_program == 2){
+		printf("[+] File Name: %s\n", file_title);
+		printf("[*] Path: %s\n", path);
+		printf("[*] Modified Time: %s\n", epoch_to_datetime(modified_time));
+		printf("[*] Start time: %s\n\n", epoch_to_datetime(start_time));
+		found_program = 0;
+	}
+
+	if (found_program == 1){
+		printf("[+] AppActivityId: %s\n", app_activity_id);
+		printf("[*] Modified Time: %s\n", epoch_to_datetime(modified_time));
+		printf("[*] Start time: %s\n\n", epoch_to_datetime(start_time));
+		found_program = 0;
+	}
+	
+	return 0;
+}
+
+int file_name_callback(void *data, int argc, char **argv, char **azColName){
+	int i;
+	int found_program = 0;
+	struct json_object *jobj;
+	char *modified_time = "";
+	char *start_time = "";
+	char *app_activity_id = "";
+	const char *path = "";
+	const char *file_title = "";
+
+	for(i = 0; i<argc; i++){
+		if(!argv[i]){
+			// Pass, it's a NULL cell
+		} else {
+			if (strcmp(azColName[i], "LastModifiedTime") == 0){
+				modified_time = argv[i];
+				// printf("ModifyTime: %s (%s)\n", modified_time, epoch_to_datetime(modified_time));
+
+			}
+			if (strcmp(azColName[i], "StartTime") == 0){
+				start_time = argv[i];
+				// printf("StartTime: %s (%s)\n", start_time, epoch_to_datetime(start_time));
 			}
 			if (strcmp(azColName[i], "AppActivityId") == 0){
 				if(strstr(argv[i], file_name) != NULL) {
@@ -203,27 +244,46 @@ int file_name_callback(void *data, int argc, char **argv, char **azColName){
 					found_program = 1;
 				}
 			}
+			
+			if (strcmp(azColName[i], "AppId") == 0){
+				if(strstr(argv[i], file_name) != NULL) {
+					const char *start_pattern = "crossplatform\"},{\"application\":\"";
+					const char *end_pattern = "\",\"platform\":\"";
+					char main_string [strlen(argv[i]) + 1];
+					sprintf(main_string, "%s", argv[i]);
+					path = find_substring(main_string, start_pattern, end_pattern);
+				}
+			}
+			
 			if(strstr(argv[i], "{") != NULL) {
 				jobj = json_tokener_parse(argv[i]);
 				json_object *tmp;
 				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
 					if(strstr(argv[i], file_name) != NULL) {
-						printf("[+] File Name: %s\n", json_object_get_string(tmp));
+						file_title = json_object_get_string(tmp );
 						json_object_object_get_ex(jobj, "description", &tmp);
-						path = json_object_get_string(tmp);
-						if (strcmp(path, "(null)") == 0) {
-							json_object_object_get_ex(jobj, "application", &tmp);
+						if (tmp != NULL){
 							path = json_object_get_string(tmp);
 						}
-						printf("[*] Path: %s\n[*] Modified Time: %s\n\n", path, epoch_to_datetime(modified_time));
+						found_program = 2;
 					}
 				}
 			}
         }
 	}
 
+	if (found_program == 2){
+		printf("[+] File Name: %s\n", file_title);
+		printf("[*] Path: %s\n", path);
+		printf("[*] Modified Time: %s\n", epoch_to_datetime(modified_time));
+		printf("[*] Start time: %s\n\n", epoch_to_datetime(start_time));
+		found_program = 0;
+	}
+
 	if (found_program == 1){
-		printf("[+] AppACtivityId: %s\n[*] Modified Time: %s\n\n", app_activity_id, epoch_to_datetime(modified_time));
+		printf("[+] AppActivityId: %s\n", app_activity_id);
+		printf("[*] Modified Time: %s\n", epoch_to_datetime(modified_time));
+		printf("[*] Start time: %s\n\n", epoch_to_datetime(start_time));
 		found_program = 0;
 	}
 	

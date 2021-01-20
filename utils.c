@@ -9,6 +9,7 @@ Description:
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 
@@ -23,11 +24,27 @@ int file_exists (char *filename) {
 
 // Conversion for epoch time used in the timeline
 char *epoch_to_datetime(char * input_time){
-    static char modified_time[80];
     time_t epoch_time = atoi(input_time);
     struct tm ts;
-
+    static char modified_time[80];
     ts = *localtime(&epoch_time);
     strftime(modified_time, sizeof(modified_time), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
     return modified_time;
+}
+
+char *find_substring(const char *main_string, const char *start_pattern, const char *end_pattern){
+
+    char *target = NULL;
+    char *start, *end;
+
+    if ((start = strstr(main_string, start_pattern))) {
+        start += strlen(start_pattern);
+        if ((end = strstr(start, end_pattern))) {
+            target = (char *)malloc(end - start + 1);
+            memcpy(target, start, end - start);
+            target[end - start] = '\0';
+        }
+    }
+
+    return(target);
 }
