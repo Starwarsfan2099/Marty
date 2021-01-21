@@ -1,8 +1,11 @@
+Linux:
 sudo apt-get install libsqlite3-dev libssl-dev
 
 Mac:
 brew install sqlite3
+brew install openssl
 
+Linux + Mac:
 git clone https://github.com/json-c/json-c
 mkdir json-c-build
 cd json-c-build
@@ -11,4 +14,10 @@ make
 make test
 make install
 
+Windows:
 
+Install all neccesary packages via CYGWin.
+
+All:
+
+Run command "make" to build Marty.
