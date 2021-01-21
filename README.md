@@ -33,7 +33,7 @@ Usage:
 ./marty "Database-Path" Command
 
 Eamples:
-./marty "ActivitiesCache.db" showtextfiles -l
+./marty "ActivitiesCache.db" showfilename RDP -l
 ./marty "ActivitiesCache.db" showextentions .docx -s
 
 ```
