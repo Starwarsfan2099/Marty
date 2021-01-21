@@ -64,3 +64,8 @@ build/*
 
 # Stackdumps
 *.exe.stackdump
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
