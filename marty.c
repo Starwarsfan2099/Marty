@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 	char later_hash[33];
 	char *temp = "";
 
-	fprintf(stderr, "\n\t[*] Marty Verion 1.0 - Alpha\n");
+	fprintf(stderr, "\n\t[*] Marty Verion 0.1 - Alpha\n");
 	fprintf(stderr, "\"It's time to go back... in the Windows Timeline.\"\n\n");
 
 	// Check for no arguments or arguments for a help menu
