@@ -12,7 +12,7 @@ endif
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS  = -g -Wall -O2
-LIBS = -L/usr/local/lib -lsqlite3 -ljson-c
+LIBS = -L/usr/local/lib -lsqlite3 -ljson-c -lssl -lcrypto
 VERBOSE = -v
 
 # the build target executable:

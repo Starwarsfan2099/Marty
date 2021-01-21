@@ -50,6 +50,9 @@ int main(int argc, char* argv[]) {
 	char *filename = argv[1];
 	int rc;
 	int len;
+	char orig_hash[33];
+	char later_hash[33];
+	char *temp = "";
 
 	fprintf(stderr, "\n\t[*] Marty Verion 1.0 - Alpha\n");
 	fprintf(stderr, "\"It's time to go back... in the Windows Timeline.\"\n\n");
@@ -72,6 +75,11 @@ int main(int argc, char* argv[]) {
 		fprintf(stderr, "[-] Can't open database: %s\n", argv[1]);
 		return(0);
 	}
+
+	temp = md5_hash_file(filename);
+	strncpy(orig_hash, temp, 32);
+	orig_hash[32] = '\0';
+	printf("[*] MD5 Hash: %s\n\n", orig_hash);
 
 	// Open the database
 	rc = sqlite3_open(filename, &db);
@@ -142,5 +150,16 @@ int main(int argc, char* argv[]) {
 
 	// Close database
 	sqlite3_close(db);
+
+	temp = md5_hash_file(filename);
+	strncpy(later_hash, temp, 32);
+	later_hash[32] = '\0';
+	if (strcmp(later_hash, orig_hash) == 0) {
+		printf("[+] %s Unchanged (%s:%s)\n\n", filename, orig_hash, later_hash);
+	} else {
+		// We should NEVER get here 
+		printf("[-] %s CHANGED (%s:%s)\n\n", filename, orig_hash, later_hash);
+	}
+
 	return 0;
 }

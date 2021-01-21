@@ -13,6 +13,10 @@ Description:
 #include <unistd.h>
 #include <time.h>
 
+#include <openssl/md5.h>
+
+#define CONSTANT 0
+
 // Check to see if a file exists
 int file_exists (char *filename) {
 	if( access( filename, F_OK ) == 0 ) {
@@ -47,4 +51,29 @@ char *find_substring(const char *main_string, const char *start_pattern, const c
     }
 
     return(target);
+}
+
+char *md5_hash_file(char *filename) {
+    unsigned char c[MD5_DIGEST_LENGTH];
+    int i;
+    FILE *inFile = fopen (filename, "rb");
+    MD5_CTX mdContext;
+    int bytes;
+    unsigned char data[1024];
+    char output_hash[33];
+    static char total[33];
+
+    // Clear the array for when it's called the 2nd time, if not we'll get "hashhash" on the second call instead of "hash";
+    memset(total, 0, 33);
+
+    MD5_Init (&mdContext);
+    while ((bytes = fread (data, 1, 1024, inFile)) != 0)
+        MD5_Update (&mdContext, data, bytes);
+    MD5_Final (c,&mdContext);
+    for(i = 0; i < MD5_DIGEST_LENGTH; i++) {
+       sprintf(output_hash, "%02x", c[i]);
+       strcat(total, output_hash);
+    }
+    fclose(inFile);
+    return(total);
 }
