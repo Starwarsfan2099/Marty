@@ -5,7 +5,7 @@ ifeq ($(OS),Windows_NT)
 else
 	# On Mac and Linux, we prefer Clang, but GCC can also be used
 	CC = clang
-	INCLUDES = -I/usr/local/include/json-c -I/usr/local/include
+	INCLUDES = -I/usr/local/include/json-c -I/usr/local/include -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib
 endif
 
 # compiler flags:

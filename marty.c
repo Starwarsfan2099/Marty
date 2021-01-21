@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 	temp = md5_hash_file(filename);
 	strncpy(orig_hash, temp, 32);
 	orig_hash[32] = '\0';
-	printf("[*] MD5 Hash: %s\n\n", orig_hash);
+	printf("[*] %s MD5 Hash: %s\n\n", filename, orig_hash);
 
 	// Open the database
 	rc = sqlite3_open(filename, &db);
