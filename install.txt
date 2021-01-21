@@ -1,4 +1,4 @@
-sudo apt-get install libsqlite3-dev
+sudo apt-get install libsqlite3-dev libssl-dev
 
 Mac:
 brew install sqlite3

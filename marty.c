@@ -146,6 +146,7 @@ int main(int argc, char* argv[]) {
 		}
 		set_extention("");
 	} else {
+		help();
 	}
 
 	// Close database
