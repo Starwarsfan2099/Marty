@@ -22,7 +22,8 @@ int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
 	printf("\tshowallinfo				Print all information in the database.\n");
-	printf("\tshowfilename NAME			Print all files found with NAME in the title.\n");
+	printf("\twriteallinfo FILE			Write all information in the database to FILE.\n");
+	printf("\tshowfilenames NAME			Print all files found with NAME in the title.\n");
 	printf("\tshowprograms				Print all programs executed by the user found in the database.\n");
 	printf("\tshowextentions EXTENTION		Print all files found with the EXTENTION.\n");
 
@@ -76,6 +77,7 @@ int main(int argc, char* argv[]) {
 		return(0);
 	}
 
+	// Hash the database for verification after we work with it
 	temp = md5_hash_file(filename);
 	strncpy(orig_hash, temp, 32);
 	orig_hash[32] = '\0';
@@ -94,7 +96,7 @@ int main(int argc, char* argv[]) {
 	// Commands go here
 	if (strcmp(argv[2], "showallinfo") == 0) {
 		command_allinfo(db);
-	} else if (strcmp(argv[2], "showfilename") == 0) {
+	} else if (strcmp(argv[2], "showfilenames") == 0) {
 		if (argc < 4) {
 			help();
 			return(0);
@@ -145,6 +147,13 @@ int main(int argc, char* argv[]) {
 			return(0);
 		}
 		set_extention("");
+	} else if (strcmp(argv[2], "writeallinfo") == 0) {
+		if (argc < 4) {
+			help();
+			return(0);
+		}
+		set_out_file_name(argv[3]);
+		command_writeallinfo(db);
 	} else {
 		help();
 	}
@@ -152,6 +161,7 @@ int main(int argc, char* argv[]) {
 	// Close database
 	sqlite3_close(db);
 
+	// Re-hash and verify the hashes match
 	temp = md5_hash_file(filename);
 	strncpy(later_hash, temp, 32);
 	later_hash[32] = '\0';

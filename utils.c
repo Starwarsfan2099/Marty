@@ -13,6 +13,7 @@ Description:
 #include <unistd.h>
 #include <time.h>
 
+// Include openssl for hashing
 #include <openssl/md5.h>
 
 #define CONSTANT 0

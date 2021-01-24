@@ -73,7 +73,7 @@ int command_allinfo(sqlite3 *db){
 	char *sql;
 	int rc;
 	char *zErrMsg = 0;
-	const char* data = "Callback function called";
+	const char* data = "Allinfo command called";
 
 	sql = "SELECT [O].[Id], [O].[AppId], [O].[PackageIdHash], [O].[AppActivityId], [O].[ActivityType], [O].[OperationType] AS [ActivityStatus], [O].[ParentActivityId], [O].[Tag], [O].[Group], [O].[MatchId], [O].[LastModifiedTime], [O].[ExpirationTime], [O].[Payload], [O].[Priority], [A].[IsLocalOnly], [O].[PlatformDeviceId], [O].[DdsDeviceId], [A].[CreatedInCloud], [O].[StartTime], [O].[EndTime], [O].[LastModifiedOnClient], 1 AS [IsInUploadQueue], [O].[GroupAppActivityId], [O].[ClipboardPayload], [O].[EnterpriseId], [O].[UserActionState], [O].[IsRead], [O].[OriginalPayload], [O].[OriginalLastModifiedOnClient], [O].[GroupItems], [O].[ETag] FROM   [ActivityOperation] AS [O]        LEFT OUTER JOIN [Activity] AS [A] ON [O].[Id] = [A].[Id] UNION SELECT [Id], [AppId], [PackageIdHash], [AppActivityId], [ActivityType], [ActivityStatus], [ParentActivityId], [Tag], [Group], [MatchId], [LastModifiedTime], [ExpirationTime], [Payload], [Priority], [IsLocalOnly], [PlatformDeviceId], [DdsDeviceId], [CreatedInCloud], [StartTime], [EndTime], [LastModifiedOnClient], 0 AS [IsInUploadQueue], [GroupAppActivityId], [ClipboardPayload], [EnterpriseId], [UserActionState], [IsRead], [OriginalPayload], [OriginalLastModifiedOnClient], [GroupItems], [ETag] FROM   [Activity] WHERE  [Id] NOT IN (SELECT [Id] FROM [ActivityOperation])";
 	rc = sqlite3_exec(db, sql, allinfo_callback, (void*)data, &zErrMsg);
@@ -88,21 +88,14 @@ int command_allinfo(sqlite3 *db){
 	}
 }
 
-int command_textfiles(sqlite3 *db, char *argument){
+int command_writeallinfo(sqlite3 *db){
 	char *sql;
 	int rc;
 	char *zErrMsg = 0;
-	const char* data = "Callback function called";
+	const char* data = "Writellinfo command called";
 
-	if ((strcmp(argument, "-s") == 0)) {
-		printf("[*] Sorting by StartTime.\n\n");
-		sql = "SELECT [O].[Id], [O].[AppId], [O].[PackageIdHash], [O].[AppActivityId], [O].[ActivityType], [O].[OperationType] AS [ActivityStatus], [O].[ParentActivityId], [O].[Tag], [O].[Group], [O].[MatchId], [O].[LastModifiedTime], [O].[ExpirationTime], [O].[Payload], [O].[Priority], [A].[IsLocalOnly], [O].[PlatformDeviceId], [O].[DdsDeviceId], [A].[CreatedInCloud], [O].[StartTime], [O].[EndTime], [O].[LastModifiedOnClient], 1 AS [IsInUploadQueue], [O].[GroupAppActivityId], [O].[ClipboardPayload], [O].[EnterpriseId], [O].[UserActionState], [O].[IsRead], [O].[OriginalPayload], [O].[OriginalLastModifiedOnClient], [O].[GroupItems], [O].[ETag] FROM   [ActivityOperation] AS [O]        LEFT OUTER JOIN [Activity] AS [A] ON [O].[Id] = [A].[Id] UNION SELECT [Id], [AppId], [PackageIdHash], [AppActivityId], [ActivityType], [ActivityStatus], [ParentActivityId], [Tag], [Group], [MatchId], [LastModifiedTime], [ExpirationTime], [Payload], [Priority], [IsLocalOnly], [PlatformDeviceId], [DdsDeviceId], [CreatedInCloud], [StartTime], [EndTime], [LastModifiedOnClient], 0 AS [IsInUploadQueue], [GroupAppActivityId], [ClipboardPayload], [EnterpriseId], [UserActionState], [IsRead], [OriginalPayload], [OriginalLastModifiedOnClient], [GroupItems], [ETag] FROM   [Activity] WHERE  [Id] NOT IN (SELECT [Id] FROM [ActivityOperation]) ORDER BY StartTime ASC";
-	} else if ((strcmp(argument, "-l") == 0)) {
-		printf("[*] Sorting by LastModifiedTime.\n\n");
-		sql = "SELECT [O].[Id], [O].[AppId], [O].[PackageIdHash], [O].[AppActivityId], [O].[ActivityType], [O].[OperationType] AS [ActivityStatus], [O].[ParentActivityId], [O].[Tag], [O].[Group], [O].[MatchId], [O].[LastModifiedTime], [O].[ExpirationTime], [O].[Payload], [O].[Priority], [A].[IsLocalOnly], [O].[PlatformDeviceId], [O].[DdsDeviceId], [A].[CreatedInCloud], [O].[StartTime], [O].[EndTime], [O].[LastModifiedOnClient], 1 AS [IsInUploadQueue], [O].[GroupAppActivityId], [O].[ClipboardPayload], [O].[EnterpriseId], [O].[UserActionState], [O].[IsRead], [O].[OriginalPayload], [O].[OriginalLastModifiedOnClient], [O].[GroupItems], [O].[ETag] FROM   [ActivityOperation] AS [O]        LEFT OUTER JOIN [Activity] AS [A] ON [O].[Id] = [A].[Id] UNION SELECT [Id], [AppId], [PackageIdHash], [AppActivityId], [ActivityType], [ActivityStatus], [ParentActivityId], [Tag], [Group], [MatchId], [LastModifiedTime], [ExpirationTime], [Payload], [Priority], [IsLocalOnly], [PlatformDeviceId], [DdsDeviceId], [CreatedInCloud], [StartTime], [EndTime], [LastModifiedOnClient], 0 AS [IsInUploadQueue], [GroupAppActivityId], [ClipboardPayload], [EnterpriseId], [UserActionState], [IsRead], [OriginalPayload], [OriginalLastModifiedOnClient], [GroupItems], [ETag] FROM   [Activity] WHERE  [Id] NOT IN (SELECT [Id] FROM [ActivityOperation]) ORDER BY LastModifiedTime ASC";
-	} else {
-		sql = "SELECT [O].[Id], [O].[AppId], [O].[PackageIdHash], [O].[AppActivityId], [O].[ActivityType], [O].[OperationType] AS [ActivityStatus], [O].[ParentActivityId], [O].[Tag], [O].[Group], [O].[MatchId], [O].[LastModifiedTime], [O].[ExpirationTime], [O].[Payload], [O].[Priority], [A].[IsLocalOnly], [O].[PlatformDeviceId], [O].[DdsDeviceId], [A].[CreatedInCloud], [O].[StartTime], [O].[EndTime], [O].[LastModifiedOnClient], 1 AS [IsInUploadQueue], [O].[GroupAppActivityId], [O].[ClipboardPayload], [O].[EnterpriseId], [O].[UserActionState], [O].[IsRead], [O].[OriginalPayload], [O].[OriginalLastModifiedOnClient], [O].[GroupItems], [O].[ETag] FROM   [ActivityOperation] AS [O]        LEFT OUTER JOIN [Activity] AS [A] ON [O].[Id] = [A].[Id] UNION SELECT [Id], [AppId], [PackageIdHash], [AppActivityId], [ActivityType], [ActivityStatus], [ParentActivityId], [Tag], [Group], [MatchId], [LastModifiedTime], [ExpirationTime], [Payload], [Priority], [IsLocalOnly], [PlatformDeviceId], [DdsDeviceId], [CreatedInCloud], [StartTime], [EndTime], [LastModifiedOnClient], 0 AS [IsInUploadQueue], [GroupAppActivityId], [ClipboardPayload], [EnterpriseId], [UserActionState], [IsRead], [OriginalPayload], [OriginalLastModifiedOnClient], [GroupItems], [ETag] FROM   [Activity] WHERE  [Id] NOT IN (SELECT [Id] FROM [ActivityOperation])";
-	}	rc = sqlite3_exec(db, sql, textfiles_callback, (void*)data, &zErrMsg);
+	sql = "SELECT [O].[Id], [O].[AppId], [O].[PackageIdHash], [O].[AppActivityId], [O].[ActivityType], [O].[OperationType] AS [ActivityStatus], [O].[ParentActivityId], [O].[Tag], [O].[Group], [O].[MatchId], [O].[LastModifiedTime], [O].[ExpirationTime], [O].[Payload], [O].[Priority], [A].[IsLocalOnly], [O].[PlatformDeviceId], [O].[DdsDeviceId], [A].[CreatedInCloud], [O].[StartTime], [O].[EndTime], [O].[LastModifiedOnClient], 1 AS [IsInUploadQueue], [O].[GroupAppActivityId], [O].[ClipboardPayload], [O].[EnterpriseId], [O].[UserActionState], [O].[IsRead], [O].[OriginalPayload], [O].[OriginalLastModifiedOnClient], [O].[GroupItems], [O].[ETag] FROM   [ActivityOperation] AS [O]        LEFT OUTER JOIN [Activity] AS [A] ON [O].[Id] = [A].[Id] UNION SELECT [Id], [AppId], [PackageIdHash], [AppActivityId], [ActivityType], [ActivityStatus], [ParentActivityId], [Tag], [Group], [MatchId], [LastModifiedTime], [ExpirationTime], [Payload], [Priority], [IsLocalOnly], [PlatformDeviceId], [DdsDeviceId], [CreatedInCloud], [StartTime], [EndTime], [LastModifiedOnClient], 0 AS [IsInUploadQueue], [GroupAppActivityId], [ClipboardPayload], [EnterpriseId], [UserActionState], [IsRead], [OriginalPayload], [OriginalLastModifiedOnClient], [GroupItems], [ETag] FROM   [Activity] WHERE  [Id] NOT IN (SELECT [Id] FROM [ActivityOperation])";
+	rc = sqlite3_exec(db, sql, write_allinfo_callback, (void*)data, &zErrMsg);
 
 	if( rc != SQLITE_OK ) {
 		fprintf(stderr, "\n[-] SQL error: %s\n", zErrMsg);
@@ -118,7 +111,7 @@ int command_programs(sqlite3 *db, char *argument){
 	char *sql;
 	int rc;
 	char *zErrMsg = 0;
-	const char* data = "Callback function called";
+	const char* data = "Program search function called";
 
 	if ((strcmp(argument, "-s") == 0)) {
 		printf("[*] Sorting by StartTime.\n\n");
@@ -145,7 +138,7 @@ int command_extentions(sqlite3 *db, char *argument){
 	char *sql;
 	int rc;
 	char *zErrMsg = 0;
-	const char* data = "Callback function called";
+	const char* data = "Extention function called";
 
 	if ((strcmp(argument, "-s") == 0)) {
 		printf("[*] Sorting by StartTime.\n\n");
@@ -171,7 +164,7 @@ int command_file_name(sqlite3 *db, char *argument){
 	char *sql;
 	int rc;
 	char *zErrMsg = 0;
-	const char* data = "Callback function called";
+	const char* data = "File name function called";
 
 	if ((strcmp(argument, "-s") == 0)) {
 		printf("[*] Sorting by StartTime.\n\n");

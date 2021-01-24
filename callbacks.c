@@ -17,12 +17,14 @@ does the brunt of the processing and output.
 
 char file_extention[10];
 char file_name[20];
+char out_file_name[20];
+int entrys = 0;
 
 int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 	int i;
 	struct json_object *jobj;
 
-	printf("%s: ", (const char*)data);
+	printf("Entry %d:\n", entrys);
 
 	for(i = 0; i<argc; i++){
 		if(!argv[i]){
@@ -40,7 +42,56 @@ int allinfo_callback(void *data, int argc, char **argv, char **azColName){
 		}
 	}
 
+	entrys++;
 	printf("\n");
+	return 0;
+}
+
+int set_out_file_name(char *name){
+	if (strlen(name) <= 19){
+		sprintf(out_file_name, "%s", name);
+		return(1);
+	} else {
+		printf("[-] File name too long.\n\n");
+		return(0);
+	}
+}
+
+int write_allinfo_callback(void *data, int argc, char **argv, char **azColName){
+	int i;
+	struct json_object *jobj;
+	FILE *out_file;
+
+	// printf("[*] Writing to file: %s\n", out_file_name);
+
+	out_file = fopen(out_file_name, "a");
+
+	if (out_file == NULL) {
+        printf("[-] Error wriitng to output file.");
+        exit(1);
+    }
+
+	fprintf(out_file, "Entry %d:\n", entrys);
+
+	for(i = 0; i<argc; i++){
+		if(!argv[i]){
+			fprintf(out_file, "%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		} else {
+			if(strstr(argv[i], "{") != NULL) {
+				jobj = json_tokener_parse(argv[i]);
+				fprintf(out_file, "%s:\n%s\n",azColName[i], \
+					json_object_to_json_string_ext(jobj, \
+					JSON_C_TO_STRING_SPACED | \
+					JSON_C_TO_STRING_PRETTY));
+			} else {
+				fprintf(out_file, "%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+			}
+		}
+	}
+
+	entrys++;
+	fprintf(out_file, "\n");
+	fclose(out_file);
 	return 0;
 }
 
@@ -156,12 +207,9 @@ int extention_callback(void *data, int argc, char **argv, char **azColName){
 		} else {
 			if (strcmp(azColName[i], "LastModifiedTime") == 0){
 				modified_time = argv[i];
-				// printf("ModifyTime: %s (%s)\n", modified_time, epoch_to_datetime(modified_time));
-
 			}
 			if (strcmp(azColName[i], "StartTime") == 0){
 				start_time = argv[i];
-				// printf("StartTime: %s (%s)\n", start_time, epoch_to_datetime(start_time));
 			}
 			if (strcmp(azColName[i], "AppActivityId") == 0){
 				if(strstr(argv[i], file_extention) != NULL) {
