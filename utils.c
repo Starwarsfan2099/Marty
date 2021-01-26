@@ -16,8 +16,6 @@ Description:
 // Include openssl for hashing
 #include <openssl/md5.h>
 
-#define CONSTANT 0
-
 // Check to see if a file exists
 int file_exists (char *filename) {
 	if( access( filename, F_OK ) == 0 ) {
@@ -37,6 +35,7 @@ char *epoch_to_datetime(char * input_time){
     return modified_time;
 }
 
+// Return substring found between two strings
 char *find_substring(const char *main_string, const char *start_pattern, const char *end_pattern){
 
     char *target = NULL;
@@ -54,6 +53,7 @@ char *find_substring(const char *main_string, const char *start_pattern, const c
     return(target);
 }
 
+// Hash for forenisc verification that the database file is unchanged
 char *md5_hash_file(char *filename) {
     unsigned char c[MD5_DIGEST_LENGTH];
     int i;
@@ -64,7 +64,7 @@ char *md5_hash_file(char *filename) {
     char output_hash[33];
     static char total[33];
 
-    // Clear the array for when it's called the 2nd time, if not we'll get "hashhash" on the second call instead of "hash";
+    // Clear the array for when it's called the 2nd time, if not we'll get "hashhash" on the second call instead of "hash"
     memset(total, 0, 33);
 
     MD5_Init (&mdContext);
