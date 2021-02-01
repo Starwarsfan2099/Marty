@@ -21,5 +21,6 @@ int command_programs(sqlite3 *db, char *argument);
 int command_get_database_path();
 int command_extentions(sqlite3 *db, char *argument);
 int command_file_name(sqlite3 *db, char *argument);
+int command_clipboard(sqlite3 *db, char *argument);
 
 #endif

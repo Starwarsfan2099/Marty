@@ -337,3 +337,70 @@ int file_name_callback(void *data, int argc, char **argv, char **azColName){
 	
 	return 0;
 }
+
+int clipboard_callback(void *data, int argc, char **argv, char **azColName){
+	int i;
+	int found_data = 0;
+	struct json_object *jobj;
+	char *start_time = "";
+	char *base_64_decoded;
+	//const char *program_name = "";
+	//const char *display_text = "";
+	const char *clipboard_encoded_data = "";
+	const char *content_type = "";
+	
+	for(i = 0; i<argc; i++){
+		if(!argv[i]){
+			// Pass, it's a NULL cell
+		} else {
+			// Get application start time
+			if (strcmp(azColName[i], "StartTime") == 0){
+				start_time = argv[i];
+			}
+			// Decode JSON data from the payload here
+			if(strstr(argv[i], "{") != NULL) {
+				jobj = json_tokener_parse(argv[i]);
+				json_object *tmp;
+				// Program Name
+				if (json_object_object_get_ex(jobj, "appDisplayName", &tmp)) {
+					//program_name = json_object_get_string(tmp);
+				}
+				// Text displayed in the title of the window for the app
+				if (json_object_object_get_ex(jobj, "displayText", &tmp)) {
+					//display_text = json_object_get_string(tmp);
+				}
+			}
+			if (strcmp(azColName[i], "ClipboardPayload") == 0){
+				if(strstr(argv[i], "{") != NULL) {
+					remove_all_chars(argv[i], ']');
+					remove_all_chars(argv[i], '[');
+					jobj = json_tokener_parse(argv[i]);
+					json_object *tmp;
+					if (json_object_object_get_ex(jobj, "content", &tmp)) {
+						clipboard_encoded_data = json_object_get_string(tmp );
+						json_object_object_get_ex(jobj, "formatName", &tmp);
+						if (tmp != NULL){
+							content_type = json_object_get_string(tmp);
+						}
+						found_data = 1;
+					}
+				}
+			}
+        }
+	}
+
+	if (found_data != 0) {
+		size_t test;
+  		base_64_decode(clipboard_encoded_data, &base_64_decoded, &test);
+		printf("[+] Clipboard data: %s\n", clipboard_encoded_data);
+		printf("[+] Clipboard data decoded: %s\n", base_64_decoded);
+		printf("[+] Content type: %s\n", content_type);
+		/*
+		printf("[*] Program: %s\n", program_name);
+		printf("[*] Display Text: %s\n", display_text);
+		*/
+		printf("[*] Time: %s\n\n", epoch_to_datetime(start_time));
+	}
+	
+	return 0;
+}

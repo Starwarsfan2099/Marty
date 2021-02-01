@@ -17,6 +17,7 @@ int programs_callback(void *data, int argc, char **argv, char **azColName);
 int extention_callback(void *data, int argc, char **argv, char **azColName);
 int file_name_callback(void *data, int argc, char **argv, char **azColName);
 int write_allinfo_callback(void *data, int argc, char **argv, char **azColName);
+int clipboard_callback(void *data, int argc, char **argv, char **azColName);
 
 int set_out_file_name(char *name);
 int set_extention(char *extention);

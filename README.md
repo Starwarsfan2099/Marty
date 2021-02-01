@@ -15,9 +15,11 @@ Marty is a Windows Timeline Analysis Program.
 
 Commands:
         showallinfo                             Print all information in the database.
-        showfilename NAME                       Print all files found with NAME in the title.
+        writeallinfo FILE                       Write all information in the database to FILE.
+        showfilenames NAME                      Print all files found with NAME in the title.
         showprograms                            Print all programs executed by the user found in the database.
         showextentions EXTENTION                Print all files found with the EXTENTION.
+        showclipboard                           Print all clipboard data in the database.
 
 Options:
         -l                                      Sort by the last modification time.
@@ -33,7 +35,7 @@ Usage:
 ./marty "Database-Path" Command
 
 Eamples:
-./marty "ActivitiesCache.db" showfilename RDP -l
+./marty "ActivitiesCache.db" showtextfiles -l
 ./marty "ActivitiesCache.db" showextentions .docx -s
 
 ```

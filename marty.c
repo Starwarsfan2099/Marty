@@ -26,6 +26,7 @@ int help() {
 	printf("\tshowfilenames NAME			Print all files found with NAME in the title.\n");
 	printf("\tshowprograms				Print all programs executed by the user found in the database.\n");
 	printf("\tshowextentions EXTENTION		Print all files found with the EXTENTION.\n");
+	printf("\tshowclipboard				Print all clipboard data in the database.\n");
 
 	printf("\nOptions:\n");
 	printf("\t-l					Sort by the last modification time.\n");
@@ -154,6 +155,17 @@ int main(int argc, char* argv[]) {
 		}
 		set_out_file_name(argv[3]);
 		command_writeallinfo(db);
+	} else if (strcmp(argv[2], "showclipboard") == 0) {
+		if (argc == 3) {
+			command_clipboard(db, "NULL");
+		} else if (strcmp(argv[3], "-s") == 0) {
+			command_clipboard(db, "-s");
+		} else if (strcmp(argv[3], "-l") == 0) {
+			command_clipboard(db, "-l");
+		} else {
+			help();
+			return(0);
+		}
 	} else {
 		help();
 	}
