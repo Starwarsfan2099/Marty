@@ -21,21 +21,21 @@ command line args, and executes commands based off of them.
 int help() {
 	printf("\nMarty is a Windows Timeline Analysis Program.\n");
 	printf("\nCommands:\n");
-	printf("\tshowallinfo				Print all information in the database.\n");
-	printf("\twriteallinfo FILE			Write all information in the database to FILE.\n");
-	printf("\tshowfilenames NAME			Print all files found with NAME in the title.\n");
-	printf("\tshowprograms				Print all programs executed by the user found in the database.\n");
-	printf("\tshowextentions EXTENTION		Print all files found with the EXTENTION.\n");
-	printf("\tshowclipboard				Print all clipboard data in the database.\n");
+	printf("\tshowallinfo              [-s, -l]		Print all information in the database.\n");
+	printf("\twriteallinfo   FILE      [-s, -l]		Write all information in the database to FILE.\n");
+	printf("\tshowfilenames  NAME      [-s, -l]		Print all files found with NAME in the title.\n");
+	printf("\tshowprograms             [-s, -l]		Print all programs executed by the user found in the database.\n");
+	printf("\tshowextentions EXTENTION [-s, -l]		Print all files found with the EXTENTION.\n");
+	printf("\tshowclipboard            [-l]			Print all clipboard data in the database.\n");
 
 	printf("\nOptions:\n");
-	printf("\t-l					Sort by the last modification time.\n");
-	printf("\t-s					Sort by the last application or editior start time.\n");
+	printf("\t-l						Sort by the last modification time.\n");
+	printf("\t-s						Sort by the last application or editior start time.\n");
 
 // Check to see if we are building on Windows, if we are, add functionality and commands.
 #if defined(__CYGWIN__) && !defined(_WIN32)
 	printf("\nWindows Commands:\n");
-	printf("\tshowdatabasepath			Print the path to the timeline database if on Windows.\n\n");
+	printf("\tshowdatabasepath				Print the path to the timeline database if on Windows.\n\n");
 	printf("To find databases:\n\tmarty.exe showdatabasepath\n");
 #endif
 
@@ -49,7 +49,6 @@ int help() {
 
 int main(int argc, char* argv[]) {
 	sqlite3 *db;
-	char *filename = argv[1];
 	int rc;
 	int len;
 	char orig_hash[33];
@@ -71,6 +70,8 @@ int main(int argc, char* argv[]) {
 		return(1);
 	}
 #endif
+	
+	char *filename = argv[1];
 	
 	// Check if the database file exists
 	if (file_exists(filename) == 0) {
