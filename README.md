@@ -38,7 +38,4 @@ Usage:
 Eamples:
 ./marty "ActivitiesCache.db" showtextfiles -l
 ./marty "ActivitiesCache.db" showextentions .docx -s
-
-
-
 ```
