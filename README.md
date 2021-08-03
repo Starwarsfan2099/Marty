@@ -1,6 +1,8 @@
 # Marty
 It's time to go back... In the Windows timeline.
 
+[Read more about Marty here.](https://starwarsfan2099.github.io/2021/02/10/marty.html)
+
 This is a **VERY** Alpha program for pulling data and timestamps from the Windows timeline. 
 Binary's of the most recent stable pre-release are provided compiled for Windows, Linux, and MacOS.
 `libsqlite3-dev`, `libssl-dev`, and `json-c` are required for building. 

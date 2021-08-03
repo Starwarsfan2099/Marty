@@ -62,8 +62,6 @@ int write_allinfo_callback(void *data, int argc, char **argv, char **azColName){
 	struct json_object *jobj;
 	FILE *out_file;
 
-	// printf("[*] Writing to file: %s\n", out_file_name);
-
 	out_file = fopen(out_file_name, "a");
 
 	if (out_file == NULL) {
